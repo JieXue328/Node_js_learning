@@ -1,6 +1,6 @@
 # Node.js Tutorial
 
-## 1. What is Node.js
+# 1. What is Node.js
 * Node.js is an open source runtime environment for **server-side** and networking applications and is **single threaded**
 * Uses Google Javascript V8 Engine to execute code
 * It is **cross platform environment** and can run on OS X, Microsoft windows, Linux and FreeBSD
@@ -66,7 +66,7 @@ Display after 2 second
 ```
 
 
-## 2. Node.js Modules
+# 2. Node.js Modules
 
 
 
