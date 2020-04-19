@@ -179,6 +179,184 @@ http.createServer(function (request, response) { // Creating Server
 console.log('Server running at localhost:3000')
 ```
 
+## Hands on example 1
+* Create a Directory: ```mkdir hands_on_example_1```
+* ```cd hands_on_example_1```
+* Create ```package.json```: ```npm init```
+* At entry point: add ```app.js```
+* Install dependency
+	* package 1: ```npm install express --save```
+	* package 2: ```npm install jade --save```
+	* package 3: ```npm install nano --save```
+	* package 4: ```npm install body-parser --save```
+	* package 5: ```npm install errorhandler --save```
+	* package 6: ```npm install url --save```
+	* package 7: ```npm install serve-favicon --save```
+	* package 8: ```npm install logger --save```
+	* package 9: ```npm install json --save```
+	* package 10: ```npm install express-session --save```
+	* package 11: ```npm install method-override --save```
+* ```npm install```
+
+
+```javascript
+var express = require('express');
+var routes = require('./routes');
+var http = require('http');
+var path = require('path');
+var urlencoded = require('url');
+var bodyParser = require('body-parser');
+var json = require('json');
+var logger = require('logger');
+var methodOverride = require('method-override');
+
+var nano = require('nano')('http://localhost:5984');
+
+var db = nano.use('address');
+var app = express;
+
+app.set('port', process.env.PORT || 3000);
+app.set('views', path.join(_dirname, 'views'));
+app.set('view engine', 'jade');
+
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded());
+app.use(methodOverride());
+app.use(exports.static(path.join(_dirname,'public')));
+
+app.get('/', routes.index);
+
+app.post('/createdb', function (req, res) {
+    nano.db.create(req.body.dbname, function(err){
+        if(err){
+            res.send("Error creating Database" + req.body.db_name);
+            return;
+        }
+        res.send("Database" + req.body.db_name + "create successfully");
+    });
+});
+
+app.post('/new_contact', function (req, res) {
+    var name = req.body.name;
+    var phone = req.body.phone;
+
+    db.insert({name:name, phone:phone, crazt:true}, phone, function (err, body, header) {
+        if(err){
+            res.send("Error creating contact");
+            return;
+        }
+        res.send("Contact created successfully");
+    });
+});
+
+app.post('/view_contact', function (req, res) {
+    var alldoc = "Following are the contatcs";
+    db.get(req.body.phone, {revs_info:true}, function (err, body) {
+        if(!err){
+            console.log(body);
+        }
+
+        if(body){
+            alldoc += "Name: " + body.name + "<br/>Phone Number" + body.phone;
+        }else{
+            alldoc = "No records found";
+        }
+        res.sned(alldoc);
+    });
+});
+
+app.post('/delete_contact', function (req, res) {
+    db.get(req.body.phone, {revs_info:true}, function (err, body) {
+        if(!err){
+            db.destroy(req.body.phone, body._rev, function (err, body) {
+                if(err){
+                    res.send("error deleting contact");
+                }
+            })
+            res.send("Contacts deleted successfully");
+        }
+    });
+});
+
+http.createServer(app).listen(app.get('port'), function () {
+    console.log("Express server listening on port" + app.get('port'))
+
+})
+```
+
+* ```node app.js```
+
+## Hands on example 2
+* Create a Directory: ```mkdir hands_on_example_2```
+* ```cd hands_on_example_2```
+* Create ```package.json```: ```npm init```
+* Create app.js
+
+#### Example 1:
+```javascript
+var first_name = "Jie";
+
+console.log(first_name);
+```
+
+Output:
+
+```
+Jie
+```
+
+#### Example 2a:
+```javascript
+var age1 = 30;
+var age2 = 30;
+
+var result = age1 == age2;
+
+console.log(result);
+```
+
+Output:
+
+```
+true
+```
+
+#### Example 2b:
+```javascript
+var age1 = 30;
+var age2 = '30';
+
+var result = age1 == age2;
+
+console.log(result);
+```
+
+Output:
+
+```
+true
+```
+
+#### Example 2c:
+```javascript
+var age1 = 30;
+var age2 = '30';
+
+var result = age1 === age2;
+
+console.log(result);
+```
+
+Output:
+
+```
+false
+```
+
+
+
+
+
 Reference:
 
 [Node JS Full Course - Learn Node.js in 7 Hours | Node.js Tutorial for Beginners | Edureka](https://www.youtube.com/watch?v=JnvKXcSI7yk)
