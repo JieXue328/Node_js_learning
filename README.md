@@ -353,6 +353,109 @@ Output:
 false
 ```
 
+#### Example 3a:
+```javascript
+function sayHello(name) {
+    return 'Hello ' + name + '!!!';
+}
+
+console.log(sayHello('Jie'));
+```
+
+Output:
+
+```
+Hello Jie!!!
+```
+
+#### Example 3b:
+```javascript
+var sayHello = function (name) {
+    return 'Hello ' + name + '!!!';
+}
+
+console.log(sayHello('Jie'))
+```
+
+Output:
+
+```
+Hello Jie!!!
+```
+
+#### Example 4:
+```javascript
+var student = {
+    name : 'Jie',
+    email: 'jie@gail.com'
+}
+
+console.log(student.name);
+```
+
+Output:
+
+```
+Jie
+```
+
+#### Example 5:
+```javascript
+var http = require('http');
+var events = require('events');
+
+var eventEmitter = new events.EventEmitter();
+
+var server = http.createServer(function (req, res) {
+    eventEmitter.emit('someone requested', "TEST");     // Event Trigger
+    res.end('Server works!!!');
+});
+
+eventEmitter.on('someone requested', function (data) {
+    console.log('A request has been done on the server!', data);
+});   //Event listener
+
+server.listen(3000, 'localhost', function () {
+    console.log('Server started on port : 3000');
+});
+
+```
+
+Output:
+
+```
+Server started on port : 3000
+
+A request has been done on the server! TEST
+```
+
+#### Example 6:
+```npm i express```
+
+```javascript
+var express = require('express');
+var http = require('http');
+var fs = require('fs');
+
+var app = express();
+var server = http.createServer(app);
+
+app.get('/', function (req, res) {
+    res.send('<h1>Express Works!</h1>');
+});
+
+app.get('/tasks', function (req, res) {
+    fs.readFile('./db.json', function (err, data) {
+        var tasks = JSON.parse(data.toString()).tasks;
+        res.json(tasks);
+    });
+});
+
+server.listen(3000, function () {
+    console.log('Server listening to port 3000');
+});
+```
+
 
 
 
