@@ -1,8 +1,8 @@
 # Node.js Tutorial
 
-[1. What is Node.js](Docs/01. What is Node.js.md)
+[1. What is Node.js](https://github.com/JieXue328/Node_js_learning/blob/master/Docs/01.%20What%20is%20Node.js.md)
 
-[2. Node.js Modules](Docs/02. Node.js Modules)
+[2. Node.js Modules](https://github.com/JieXue328/Node_js_learning/blob/master/Docs/02.%20Node.js%20Modules.md)
 
 
 
